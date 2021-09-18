@@ -1,53 +1,51 @@
 class ParallaxBg {
 
-  float speed;
-
+  PImage img;
   ParallaxBg dupeLayer;
   boolean isDupe = false;
-  float spriteWidth;
-  float startX, endX, offsetX;
-  PVector delta = new PVector();
+  float startX, endX;
+  PVector position = new PVector();
+  float delta = 10;
   boolean flip = false;
+  int lastMillis = 0;
 
-  ParallaxBg() {
-    if (gameObject.name.Split('(')[0] != transform.parent.name.Split('(')[0]) {
-      dupeLayer = GameObject.Instantiate(gameObject).GetComponent<Parallaxer>();
-      dupeLayer.isDupe = true;
-      dupeLayer.transform.SetParent(transform);
-
-      SpriteRenderer ren = GetComponent<SpriteRenderer>();
-      spriteWidth = ren.sprite.rect.width / 100f; // half pixel width / 100
-
-      transform.Translate(new Vector3(spriteWidth, 0f, 0f));
-      startX = transform.position.x;
-      dupeLayer.startX = startX - spriteWidth;
-      dupeLayer.transform.position = new Vector2(dupeLayer.startX, transform.position.y);
+  ParallaxBg(PImage _img, PVector _position, boolean _isDupe) {
+    img = _img;
+    position = _position;
+    isDupe = _isDupe;
+    
+    position.x += img.width;
+    startX = position.x;
+    
+    if (!isDupe) {
+      dupeLayer = new ParallaxBg(img, position, true);
+      dupeLayer.startX = startX - img.width;
+      dupeLayer.position = new PVector(dupeLayer.startX, position.y);  
     }
   }
 
   void update() {
     if (!isDupe) {
-      delta = Vector2.left * speed * Time.deltaTime;
-      offsetX = (Screen.width / Camera.main.orthographicSize) / 100f;
-      endX = startX - spriteWidth;
-      //Debug.Log("spriteWidth: " + spriteWidth + ", startX: " + startX + ", endX: " + endX + ", offsetX: " + offsetX);
+      endX = startX - img.width;
 
-      transform.Translate(delta);
+      position.x += delta;
 
-      if (transform.position.x < endX) {
+      if (position.x < endX) {
         if (flip) {
           flip = false;
-    } else {
-          dupeLayer.startX += spriteWidth * 2;
+        } else {
+          dupeLayer.startX += img.width * 2;
           flip = true;
-    }
+        }
 
-    transform.position = new Vector2(startX, transform.position.y);
+        position = new PVector(startX, position.y);
       }
     }
   }
   
   void draw() {
+    image(img, position.x, position.y);
+    image(dupeLayer.img, dupeLayer.position.x, dupeLayer.position.y);
   }
   
   void run() {
