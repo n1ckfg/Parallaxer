@@ -28,7 +28,7 @@ class ParallaxBg {
     startX = position.x;
     endX = startX + spriteWidth;
     startX2 = startX - spriteWidth;
-    position2 = new PVector(startX2, position.y);
+    position2 = new PVector(startX2, 0);
   }
   
   void update() {
@@ -48,7 +48,6 @@ class ParallaxBg {
   
   void draw() {
     pushMatrix();
-    imageMode(CORNER);
     translate(position.x, position.y);
     image(img, 0, 0);
     image(img, position2.x, position2.y);
