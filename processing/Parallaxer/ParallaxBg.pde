@@ -26,19 +26,19 @@ class ParallaxBg {
   void init() {
     spriteWidth = img.width;
     startX = position.x;
-    endX = startX + spriteWidth;
-    startX2 = startX - spriteWidth;
+    endX = startX - spriteWidth;
+    startX2 = startX + spriteWidth;
     position2 = new PVector(startX2, 0);
   }
   
   void update() {
-    position.x += speed;
+    position.x -= speed;
 
-    if (position.x > endX) {
+    if (position.x < endX) {
       if (flip) {
         flip = false;
       } else {
-        startX2 -= spriteWidth;
+        startX2 += spriteWidth;
         flip = true;
       }
   
