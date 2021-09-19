@@ -1,56 +1,55 @@
 class ParallaxBg {
 
+  float speed;
   PImage img;
-  ParallaxBg dupeLayer;
-  boolean isDupe = false;
-  float startX, endX;
-  PVector position = new PVector();
-  float delta = 10;
+  float spriteWidth;
+  float startX, startX2, endX;
   boolean flip = false;
-  int lastMillis = 0;
+  PVector position, position2;
 
-  ParallaxBg(PImage _img, PVector _position, boolean _isDupe) {
+  ParallaxBg(PImage _img, float _speed, PVector _position) {
     img = _img;
+    speed = _speed;
     position = _position;
-    isDupe = _isDupe;
     
-    position.x += img.width;
+    spriteWidth = img.width; // half pixel width
+
+    //position.x -= spriteWidth;
     startX = position.x;
-    
-    if (!isDupe) {
-      dupeLayer = new ParallaxBg(img, position, true);
-      dupeLayer.startX = startX - img.width;
-      dupeLayer.position = new PVector(dupeLayer.startX, position.y);  
-    }
+    endX = startX + spriteWidth;
+    startX2 = startX - spriteWidth;
+    position2 = new PVector(startX2, position.y);
   }
 
   void update() {
-    if (!isDupe) {
-      endX = startX - img.width;
+    //println("spriteWidth: " + spriteWidth + ", startX: " + startX + ", endX: " + endX);
 
-      position.x += delta;
+    position.x += speed;
 
-      if (position.x < endX) {
-        if (flip) {
-          flip = false;
-        } else {
-          dupeLayer.startX += img.width * 2;
-          flip = true;
-        }
-
-        position = new PVector(startX, position.y);
+    if (position.x > endX) {
+      if (flip) {
+        flip = false;
+      } else {
+        startX2 -= spriteWidth;
+        flip = true;
       }
+  
+      position = new PVector(startX, position.y);
     }
   }
   
   void draw() {
-    image(img, position.x, position.y);
-    image(dupeLayer.img, dupeLayer.position.x, dupeLayer.position.y);
+    pushMatrix();
+    imageMode(CORNER);
+    translate(position.x, position.y);
+    image(img, 0, 0);
+    image(img, position2.x, position2.y);
+    popMatrix();
   }
   
   void run() {
     update();
     draw();
   }
-  
+
 }
