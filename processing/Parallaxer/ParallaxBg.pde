@@ -12,18 +12,26 @@ class ParallaxBg {
     speed = _speed;
     position = _position;
     
-    spriteWidth = img.width; // half pixel width
-
-    //position.x -= spriteWidth;
+    init();
+  }
+  
+  ParallaxBg(String _url, float _speed, PVector _position) {
+    img = loadImage(_url);
+    speed = _speed;
+    position = _position;
+    
+    init();
+  }
+  
+  void init() {
+    spriteWidth = img.width;
     startX = position.x;
     endX = startX + spriteWidth;
     startX2 = startX - spriteWidth;
     position2 = new PVector(startX2, position.y);
   }
-
+  
   void update() {
-    //println("spriteWidth: " + spriteWidth + ", startX: " + startX + ", endX: " + endX);
-
     position.x += speed;
 
     if (position.x > endX) {
