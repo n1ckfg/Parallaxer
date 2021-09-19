@@ -1,4 +1,4 @@
-class ParallaxBg {
+class Parallaxer {
 
   float speed;
   PImage img;
@@ -7,7 +7,7 @@ class ParallaxBg {
   boolean flip = false;
   PVector position, position2;
 
-  ParallaxBg(PImage _img, float _speed, PVector _position) {
+  Parallaxer(PImage _img, float _speed, PVector _position) {
     img = _img;
     speed = _speed;
     position = _position;
@@ -15,7 +15,7 @@ class ParallaxBg {
     init();
   }
   
-  ParallaxBg(String _url, float _speed, PVector _position) {
+  Parallaxer(String _url, float _speed, PVector _position) {
     img = loadImage(_url);
     speed = _speed;
     position = _position;
