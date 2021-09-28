@@ -32,7 +32,11 @@ void draw() {
   pushMatrix();
   xPos = lerp(xPos, mouseX, 0.1);
   translate(xPos, height/2);
-  scale(-0.5, 0.5);
+  if (mouseX < xPos) {
+    scale(0.5, 0.5);
+  } else {
+    scale(-0.5, 0.5);
+  }
   image(player, 0, 0);
   popMatrix();
 }
