@@ -633,3 +633,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lerpSpeed: 0.1
+  parallaxSpeed: 2
+  parallaxers:
+  - {fileID: 488926364}
+  - {fileID: 519578789}

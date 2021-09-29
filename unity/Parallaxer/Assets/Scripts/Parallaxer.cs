@@ -9,9 +9,8 @@ public class Parallaxer : MonoBehaviour {
     private Parallaxer dupeLayer;
     private bool isDupe = false;
     private float spriteWidth;
-    private float startX, endX; //offsetX;
+    private float startX, endX;
     private Vector2 delta = Vector2.zero;
-    private bool flip = false;
 
     private void Start() {
         if (gameObject.name.Split('(')[0] != transform.parent.name.Split('(')[0]) {
@@ -24,6 +23,8 @@ public class Parallaxer : MonoBehaviour {
 
             transform.Translate(new Vector3(spriteWidth, 0f, 0f));
             startX = transform.position.x;
+            endX = startX - spriteWidth;
+
             dupeLayer.startX = startX - spriteWidth;
             dupeLayer.transform.position = new Vector2(dupeLayer.startX, transform.position.y);
         }
@@ -32,21 +33,13 @@ public class Parallaxer : MonoBehaviour {
     private void Update() {
         if (!isDupe) {
             delta = Vector2.left * speed * Time.deltaTime;
-            //offsetX = (Screen.width / Camera.main.orthographicSize) / 100f;
-            endX = startX - spriteWidth;
-            //Debug.Log("spriteWidth: " + spriteWidth + ", startX: " + startX + ", endX: " + endX + ", offsetX: " + offsetX);
 
             transform.Translate(delta);
 
             if (transform.position.x < endX) {
-                if (flip) {
-                    flip = false;
-				} else {
-                    dupeLayer.startX += spriteWidth * 2;
-                    flip = true;
-				}
-
 				transform.position = new Vector2(startX, transform.position.y);
+            } else if (transform.position.x > startX) {
+                transform.position = new Vector2(endX, transform.position.y);
             }
         }
     }
