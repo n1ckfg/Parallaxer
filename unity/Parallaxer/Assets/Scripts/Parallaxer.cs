@@ -30,7 +30,7 @@ public class Parallaxer : MonoBehaviour {
                 spriteWidth = meshRen.bounds.size.x;
             }
 
-            transform.Translate(new Vector2(spriteWidth, 0f));
+            transform.Translate(new Vector3(spriteWidth, 0f, 0f));
             startX = transform.position.x;
             endX = startX - spriteWidth;
 
@@ -46,9 +46,9 @@ public class Parallaxer : MonoBehaviour {
             transform.Translate(delta);
 
             if (transform.position.x < endX) {
-				transform.position = new Vector2(startX, transform.position.y);
+				transform.position = new Vector3(startX, transform.position.y, transform.position.z);
             } else if (transform.position.x > startX) {
-                transform.position = new Vector2(endX, transform.position.y);
+                transform.position = new Vector3(endX, transform.position.y, transform.position.z);
             }
         }
     }
