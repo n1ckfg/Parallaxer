@@ -10,7 +10,11 @@ public class ParallaxControl : MonoBehaviour {
 
     private void Update() {
         for (int i = 0; i < parallaxers.Length; i++) {
-            parallaxers[i].speed = player.transform.position.x * (i + 1) * parallaxSpeed;
+            if (player.isRunning) {
+                parallaxers[i].speed = player.transform.position.x * (i + 1) * parallaxSpeed;
+            } else {
+                parallaxers[i].speed = 0f;
+            }
             if (player.screenCoords.x < player.transform.position.x) parallaxers[i].speed = -Mathf.Abs(parallaxers[i].speed);
         }
     }
