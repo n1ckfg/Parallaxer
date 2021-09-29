@@ -3,8 +3,7 @@ class Parallaxer {
   float speed;
   PImage img;
   float spriteWidth;
-  float startX, startX2, endX;
-  boolean flip = false;
+  float startX, endX;
   PVector position, position2;
 
   Parallaxer(PImage _img, float _speed, PVector _position) {
@@ -27,23 +26,17 @@ class Parallaxer {
     spriteWidth = img.width;
     startX = position.x;
     endX = startX - spriteWidth;
-    startX2 = startX + spriteWidth;
-    position2 = new PVector(startX2, 0);
+    position2 = new PVector(startX + spriteWidth, 0);
   }
  
   void update() {
     position.x -= speed;
     
     if (position.x < endX) {
-      if (flip) {
-        flip = false;
-      } else {
-        startX2 += spriteWidth;
-        flip = true;
-      }
-  
       position = new PVector(startX, position.y);
-    }    
+    } else if (position.x > startX) {
+      position = new PVector(endX, position.y);
+    }
   }
   
   void draw() {
