@@ -30,10 +30,10 @@ class Parallaxer {
     startX2 = startX + spriteWidth;
     position2 = new PVector(startX2, 0);
   }
-  
+ 
   void update() {
     position.x -= speed;
-
+    
     if (position.x < endX) {
       if (flip) {
         flip = false;
@@ -43,7 +43,7 @@ class Parallaxer {
       }
   
       position = new PVector(startX, position.y);
-    }
+    }    
   }
   
   void draw() {
