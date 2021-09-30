@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title>Parallaxer</title>
+		<link rel="stylesheet" href="./css/main.css">
+		<script src="./js/libraries/p5.min.js"></script>
+		<script src="./js/libraries/p5.gif.min.js"></script>
+		<script src="./js/parallaxer.js"></script>
+	</head>
+
+	<body>
+		<script>
+			"use strict";
+
+			let bg0, bg1;
+			let img0, img1;
+			let player;
+			let xPos, delta;
+			let stopDelta = 0.5;
+			let speed = 0.03;
+
+			function preload() {
+				img0 = loadImage("./images/bg0.png");
+				img1 = loadImage("./images/bg1.png");
+				player = loadGif("./images/megaman.gif");
+			}
+
+			function setup() {
+				createCanvas(1024, 512);
+				noSmooth();
+				bg0 = new Parallaxer(img0, delta, createVector(0, 0));
+				bg1 = new Parallaxer(img1, delta*2, createVector(0, 0));
+
+				xPos = width/2;
+			}
+
+			function draw() {
+				background(0);
+
+				imageMode(CORNER);
+				push();
+				scale(height / bg0.img.height);
+				delta = abs(xPos - width/2) * speed;
+				
+				if (mouseX < xPos) delta = -delta;
+
+				if (xPos > width/3 && xPos < (width/3)*2 && delta > -stopDelta && delta < stopDelta) {
+					delta = 0;
+					player.pause();
+				} else {
+					player.play();
+				}
+
+				bg0.speed = delta;
+				bg1.speed = delta * 2;
+				bg0.run();
+				bg1.run();
+				pop();
+
+				imageMode(CENTER);
+				push();
+				xPos = lerp(xPos, mouseX, 0.1);
+				translate(xPos, height/2);
+				
+				if (mouseX < xPos) {
+					scale(0.5, 0.5);
+				} else {
+					scale(-0.5, 0.5);
+				}
+
+				image(player, 0, 0);
+				pop();
+			}
+		</script>
+	</body>
+
+</html>
